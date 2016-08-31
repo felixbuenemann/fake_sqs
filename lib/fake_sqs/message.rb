@@ -52,13 +52,15 @@ module FakeSQS
     end
 
     def add_string_to_buffer(string, buffer)
-      string_bytes = string.force_encoding('UTF-8').bytes.to_a
-      buffer.concat string_bytes.pack("N").bytes.to_a
+      string_bytes = string.force_encoding('UTF-8').bytes
+      buffer.concat [string_bytes.size].pack("N").bytes
+      buffer.concat string_bytes
     end
 
     def add_binary_to_buffer(binary, buffer)
-      binary_bytes = binary.unpack("m*")[0].bytes.to_a
-      buffer.concat binary_bytes.pack("N").bytes.to_a
+      binary_bytes = binary.unpack("m*")[0].bytes
+      buffer.concat [binary_bytes.size].pack("N").bytes
+      buffer.concat binary_bytes
     end
 
     private
